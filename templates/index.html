@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DermAssist</title>
+    <link rel="stylesheet" href="static/styles.css"> 
+    <link rel="icon" type="image/png" href="static/icon.png">
+
+</head>
+
+  <body>
+    <div class="content">
+      <header>
+          <h1>Wellness Website Demo</h1>
+      </header>
+
+      <div id="sidebar">
+          <h2>Assessment</h2>
+          <ul>
+            <li>
+              <span class="node"></span>
+              <a href="#basic-info">Basic Info</a>
+              <p class="grey-text">Some info to get started</p>
+            </li>
+            <li>
+              <span class="node"></span>
+              <a href="#personal-history">Personal History</a>
+              <p class="grey-text">Your health history</p>
+            </li>
+            <li>
+              <span class="node"></span>
+              <a href="#family-history">Family History</a>
+              <p class="grey-text">Your family's health history</p>
+            </li>
+            <li>
+              <span class="node"></span>
+              <a href="#summary">Summary</a>
+              <p class="blue-text">Review your data</p>
+            </li>
+          </ul>
+      </div>
+      <form id="username-form" method="post">
+        <div class="overlay" id="overlay">
+          <div class="popup">
+            <input type="text" name="username_input" id="usernameInput" placeholder="Username">
+            <button type="submit">Submit</button>
+          </div>
+        </div>
+      </form>
+
+      <main>
+        <section id="chat-interface">
+          <h2>DermAssist</h2>   
+          <img class="avatar-image" id="chatbot-avatar-image" src="{{ data.emotion_image }}" alt="avatar">
+          
+          <button class="audio-button" onclick="toggleAudio()">
+            <img class="audio-icon" id="audioIcon" src="static/audio_off.png" alt="Toggle Audio">
+          </button>
+
+          <div class="chat-container">
+            {% for message in data.messages %}
+              {% if message.role == 'user' %}
+                <div class="message">
+                  <div class="message-content">
+                      <p>You: {{ message.content }}</p>
+                  </div>
+                  <div class="message-timestamp">{{ message.time }}</div>
+                </div>
+              {% elif message.role == 'assistant' %}
+                <div class="message">
+                  <img class="emotion-image" src="{{ message.emotion_image }}" alt="Emotion Image">
+                  <div class="message-content">
+                      <p>AI: {{ message.content }}</p>
+                  </div>
+                  <div class="message-timestamp">{{ message.time }}</div>
+                  <!-- Display the emotion image for each assistant message -->
+                  
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+
+          <form id="message-form" method="post">
+            <img id="loading" src="static/icon.png" />
+            <div class="user-input">
+              <input type="text" name="user_input" placeholder="Type your message...">
+              <button id="sendMessageButton" type="submit">Send </button>
+            </div>
+          </form>
+        </section>
+        <!-- Playing audio-->
+        
+
+        <audio id="audio" autoplay>
+            <source src="static/audio.mp3" type="audio/mpeg">
+        </audio>
+
+        
+        
+        <section>
+          <h1 style="color: #03254c;" id = "summary">Summary</h1>
+          <p class="section-grey-text">{{ data.summary }}</p>
+          <hr class="divider">
+        </section>
+
+        <section class="avatar-section">
+          <p class="section-grey-text">Upload your avatar image below:</p>
+          <div class="avatar-image-container">
+            <img class="avatar-image" id="avatar-image" src="static/icon.png" alt="Avatar">
+            <label for="image-upload-input" class="custom-upload-button" id="uploadImageButton">
+              Upload Image
+            </label>
+            <input type="file" id="image-upload-input" accept="image/*">
+          </div>
+        </section>
+
+        <section class="avatar-section">
+          <p class="section-grey-text">Enter your image generation prompt:</p>
+          <form id= "imageForm" action="/generate_image" method="post">
+              <input type="text" name="user_input" style="font-size: 16px;" placeholder="Enter your input">
+            <button type="submit" class="custom-upload-button" style="font-size: 16px;">Generate Image</button>
+          </form>
+        </section>
+
+
+        <section class="genomic-info-section">
+          <p class="section-grey-text">Upload your genomic info file (.tsv) below:</p>
+          <div class="file-upload-container">
+            <label for="genomic-info-upload-input" class="custom-upload-button" id="uploadButton">
+              Upload TSV File
+            </label>
+            <input type="file" id="genomic-info-upload-input" accept=".tsv" style="display: none;">
+          </div>
+
+          <div id="confirmation-message" style="display: none; color: white; background-color: #77DD77; border-radius: 5%; text-align: center; margin-top: 5px;">
+            Your Genomic Data was Successfully Uploaded!
+          </div>
+        </section>
+
+        
+      
+    </div>
+    
+    <footer>
+        <p>© 2024 Stephanie Wan, Nick Yan, Rianna Santra, Manasvi Pinnaka, Rajarshi Mandal, Gavin Ye</p>
+    </footer>
+</body>
+  
+  <script>
+
+    
+    
+    function scrollToBottom() {
+      const chatContainer = document.querySelector('.chat-container');
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+    document.addEventListener("DOMContentLoaded", function () {
+      changeChatbotAvatar();
+      scrollToBottom();
+      toggleAudio();
+      const overlay = document.getElementById("overlay");
+
+
+      const username_element = document.getElementById("usernameInput")
+
+      // Check if the username is already stored in localStorage
+      const savedUsername = localStorage.getItem("username");
+
+      if (savedUsername) {
+        // If the username is found, hide the popup
+        overlay.style.display = "none";
+        username_element.textContent = savedUsername;
+        fetch("/username-endpoint", {
+          method: "POST",
+          body: JSON.stringify({ username: savedUsername }),
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }).then(response => response.json()).then(data => {
+          console.log(data);
+        }).catch(error => {
+          console.error("Error:", error);
+        })
+      } else {
+        // If the username is not found, display the popup
+        overlay.style.display = "block";
+      }
+      setChatbotAvatar();
+    });
+
+    
+
+    // Endpoint for username form
+    document.getElementById("username-form").addEventListener("submit", function(event) {
+      event.preventDefault();
+      const username = usernameInput.value;
+
+      if (username.trim() !== "") {
+        // Store the username in localStorage
+        localStorage.setItem("username", username);
+        // Hide the popup
+        overlay.style.display = "none";
+        username_element.textContent = savedUsername;
+        fetch("/username-endpoint", {
+          method: "POST",
+          body: JSON.stringify({ username: savedUsername }),
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }).then(response => response.json()).then(data => {
+          console.log(data);
+        }).catch(error => {
+          console.error("Error:", error);
+        })
+      } else {
+        alert("Please enter a username.");
+      }
+    })
+
+    const audio = document.getElementById('audio');
+    const audioIcon = document.getElementById('audioIcon');
+
+    function toggleAudio() {
+      if (audio.paused) {
+          audio.play();
+          audioIcon.src = "static/audio_on.png"; // Change to second image when audio is playing
+      } else {
+          audio.pause();
+          audioIcon.src = "static/audio_off.png"; // Change to first image when audio is paused
+        //icons by apien and freepik
+      }
+    }
+
+
+    // Show loading.gif when sending or receiving a message
+    document.getElementById("sendMessageButton").addEventListener("click", function() {
+      document.getElementById('loading').src = 'static/loading.gif';
+
+
+    });
+    document.addEventListener("DOMContentLoaded", function() {
+      document.getElementById('loading').src = 'static/icon.png';
+
+    });
+
+
+    // Get the image upload input and the avatar image element
+
+    const imageUploadInput = document.getElementById("image-upload-input");
+    const avatarImage = document.getElementById("avatar-image");
+
+    // Update the image upload handling code to save the avatar URL
+    imageUploadInput.addEventListener("change", (event) => {
+        const file = event.target.files[0];
+
+        if (file) {
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+            avatarImage.src = e.target.result;
+
+            // Save the uploaded avatar URL to local storage
+            localStorage.setItem("uploadedAvatar", e.target.result);
+
+            // Update the chatbot's avatar as well
+            setChatbotAvatar();
+        };
+
+        reader.readAsDataURL(file);
+        }
+    });
+
+
+    // Function to set the chatbot's avatar image from local storage
+    function setChatbotAvatar() {
+      const chatbotAvatarImage = document.getElementById("chatbot-avatar-image");
+      const uploadedAvatarURL = localStorage.getItem("uploadedAvatar");
+
+      if (uploadedAvatarURL) {
+        chatbotAvatarImage.src = uploadedAvatarURL;
+      }
+    }
+
+    // setChatbotAvatar();
+
+    function changeChatbotAvatar() {
+      const chatbotAvatarImage = document.getElementById("chatbot-avatar-image");
+      const emotionImage = document.querySelector(".emotion-image");
+
+      if (emotionImage) {
+        chatbotAvatarImage.src = emotionImage.src;
+      }
+    }
+    document.getElementById('uploadButton').addEventListener('click', function() {
+      const fileInput = document.getElementById('genomic-info-upload-input');
+
+      if (fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+        const formData = new FormData();
+        formData.append('genomicFile', file);
+
+        fetch('/genomic_data', {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => {
+          if (response.ok) {
+            // Show the confirmation message
+            document.getElementById('confirmation-message').style.display = 'block';
+
+            // Hide the confirmation message after 3 seconds
+            setTimeout(function() {
+              document.getElementById('confirmation-message').style.display = 'none';
+            }, 3000);
+            return response.json();
+          }
+          throw new Error('Network response was not ok.');
+        })
+        .then(data => {
+          // Handle the response data from the backend if needed
+          console.log('File uploaded successfully:', data);
+        })
+        .catch(error => {
+          // Handle errors
+          console.error('There was a problem with the upload:', error);
+        });
+      } else {
+        console.log('Please select a file to upload.');
+      }
+    }); 
+  </script>
+</html>

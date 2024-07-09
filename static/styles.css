@@ -1,0 +1,414 @@
+
+  body {
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #F5F5F5;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0; /* Add this line to remove default margin */
+    position: relative;
+  }
+  
+  .audio-button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+      background-color: #0080c0; /* Add background color */
+      border: none;
+      width: 35px;
+      height: 35px;
+      padding: 10 px;
+  }
+  
+  .audio-icon {
+      width: 25px;
+      height: 25px;
+      color: white;
+  }
+  
+  
+  .content {
+      flex: 1;
+      padding-bottom: 100px; /* Adjust the padding to accommodate the footer height */
+
+  }
+  .avatar-image {
+    transition: all 0.5s ease;
+  }
+
+
+
+  header {
+    background-color: #007BFF;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    position: static;
+    width: 100%; /* Add this line to make header full width */
+  }
+
+  #sidebar {
+    width: 200px;
+    height: 100vh; 
+    /* background: #eee;  */
+    color: #fff;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* This will center the text */
+    margin-left: 10px;
+  }
+
+  #sidebar h2 {
+      color: #03045e; /* This will make the "Assessment" text dark blue */
+  }
+
+  #sidebar ul {
+      list-style-type: none;
+      padding: 0;
+      text-align: left; /* Align the text to the left */
+  }
+
+  .node {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      background-color: lightblue;
+      border-radius: 50%;
+      margin-right: 20px;
+      position: relative;
+      vertical-align: middle; /* Add this line */
+  }
+
+
+  #sidebar ul li {
+      margin-bottom: 5px; /* Increase this value to add more space between each list item */
+  }
+  .node::after {
+      content: "";
+      position: absolute;
+      margin-top: 5px;
+      top: 100%;
+      left: 45%;
+      width: 2px; /* Width of the line */
+      height: 50px; /* Space between nodes, adjust as needed */
+      background-color: #0077b6; /* Color of the line */
+  }
+
+  #sidebar ul li:last-child .node::after {
+      display: none;
+  }
+
+  .node.complete::before {
+      content: '✔'; 
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #0077b6;
+  }
+
+  #sidebar ul li a {
+      color: #03045e;
+      text-decoration: none;
+      line-height: 20px; /* Add this line */
+      vertical-align: middle; /* Add this line */
+  }
+
+
+  main {
+      margin-left: 210px;
+      padding: 20px;
+      flex: 1 0 auto;  /* This will push the footer to the bottom */
+  }
+
+  footer {
+      margin-top:100px;
+      background-color: #007BFF;
+      color: white;
+      width: 100%;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      text-align: center;
+      padding: 10px 0;
+  }
+
+  .grey-text {
+      color: #aaa;
+      margin-left: 40px; /* Adjust this value to align the grey text under the sidebar item */
+      margin-top: 5px; /* Adjust this value to decrease the margin between the text */
+
+  }
+
+  .blue-text {
+      color: #0067b6;
+      margin-left: 40px; /* Adjust this value to align the grey text under the sidebar item */
+      margin-top: 5px; /* Adjust this value to decrease the margin between the text */
+  }
+
+  section h1 {
+      font-size: 24px;
+      margin-top: -95vh;  
+  }
+  section{
+      position: relative; 
+
+      margin-left: 7%; 
+  }
+
+  section-grey-text {
+      color: #aaa;
+      margin-top: 5px; /* Adjust this value to decrease the margin between the text */
+
+  }
+
+  section h2{
+      /* margin-top: 50px; */
+      color: #0077b6; 
+      font-size: 32px;
+      text-align: center; 
+      vertical-align: top;
+      font-weight: bold;
+}
+
+  .three-column {
+    display: flex;
+    justify-content: space-between;
+    color: #03045e;
+    margin-bottom: 100px;
+  }
+
+  .three-column > div {
+    flex-basis: 30%;
+  }
+
+  @media (max-width: 768px) {
+    .three-column {
+      flex-wrap: wrap;
+    }
+
+    .three-column > div {
+      flex-basis: 100%;
+      margin-bottom: 10px;
+    }
+  }
+
+  .divider {
+      border: none;
+      border-top: 1px solid #ccc;
+      margin: 20px 0;
+  }
+
+  /* Style for the chat container */
+  .chat-container {
+    height: 300px;
+    overflow-y: auto;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+
+  /* Style for each chat message */
+  .message {
+    display: flex;
+    margin-bottom: 10px;
+  }
+
+  /* Style for the message content */
+  .message-content {
+    background-color: #f1f1f1;
+    padding: 10px;
+    border-radius: 5px;
+  }
+
+  /* Style for the message timestamp */
+  .message-timestamp {
+    color: #888;
+    margin-left: auto;
+    margin-right: 10px; /* Add this line to align the timestamp to the left */
+  }
+
+  /* Style for the user input section */
+  .user-input {
+    margin-top: 10px;
+  }
+
+  /* Style for the input field */
+  .user-input input {
+    width: 85%;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-left: 30px;
+  }
+
+  /* Style for the send button */
+  .user-input button {
+    padding: 5px 10px;
+    background-color: #0077b6;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 8%;
+  }
+
+
+  #chat-interface {
+      top: -100vh;
+      z-index: 1;
+      background-color: #f1f1f1;
+      padding: 10px;
+      margin-bottom: 20px;
+
+  }
+
+  #chat-interface h2{
+      size: 50px;
+  }
+        .avatar-image {
+              width: 100px;
+              height: auto;
+              border-radius: 50%;
+              display: block;
+              margin-left: auto;
+              margin-right: auto;
+              margin-bottom: 20px;
+          }
+
+  .overlay {
+      font-family: Arial, sans-serif;
+      background-color: #2196F3; /* Blue background color */
+      color: white;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
+      z-index: 10;
+      display: none;
+  }
+
+  .overlay .popup {
+      background-color: white;
+      padding: 20px;
+      text-align: center;
+      border-radius: 5px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+      z-index: 10;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+  
+  }
+
+  .overlay .user-input {
+      text-align: center;
+      margin-top: 20px;
+  }
+
+  .overlay input[type="text"] {
+      padding: 10px;
+      border: 1px solid #2196F3; /* Blue border */
+      border-radius: 5px;
+  }
+
+  .overlay button {
+      padding: 10px 20px;
+      background-color: #2196F3; /* Blue button color */
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+  }
+
+  .overlay button:hover {
+      background-color: #0E74DA; /* Darker blue on hover */
+  }
+
+  .custom-upload-button {
+    background-color: #0077b6;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 5px 10px;
+  }
+
+  #image-upload-input {
+    display: none;
+  }
+
+  .avatar-section {
+    text-align: center;
+    margin-top: 20px; /* Add margin to separate the section from the "Summary" section */
+  }
+
+  .avatar-section h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #0077b6;
+  }
+
+  .upload-button {
+    display: inline-block;
+    background-color: #0077b6;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 10px 20px;
+  }
+
+  .upload-button:hover {
+    background-color: #0E74DA; /* Darker blue on hover */
+  }
+
+  .avatar-section p {
+    color: #aaa;
+    margin-top: 5px;
+  }
+
+  .avatar-image-container {
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  #loading {
+    position: absolute;
+    display: block;
+    width: 20px; /* Adjust the width as needed */
+    height: 20px; /* Adjust the height as needed */
+    border-radius: 50%; /* Makes the image rounded */
+    margin-top: 3px;
+  } 
+
+  .emotion-image {
+    width: 50px;
+    height: 50px;
+    margin-top: 10px;
+    border-radius: 50%; 
+  }
+
+  .genomic-info-section{
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  .genomic-info-section p {
+    color: #aaa;
+    margin-top: 5px;
+  }
+
