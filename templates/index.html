@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>DermAssist</title>
+    <title>WellnessGPT</title>
     <link rel="stylesheet" href="static/styles.css"> 
     <link rel="icon" type="image/png" href="static/icon.png">
-
 </head>
 
   <body>
@@ -49,8 +48,17 @@
 
       <main>
         <section id="chat-interface">
-          <h2>DermAssist</h2>   
-          <img class="avatar-image" id="chatbot-avatar-image" src="{{ data.emotion_image }}" alt="avatar">
+          <h2>WellnessGPT</h2>   
+          <!-- <img class="avatar-image" id="chatbot-avatar-image" src="{{ data.emotion_image }}" alt="avatar"> -->
+          <section class="avatar-section">
+            <p class="section-grey-text">Generated Avatar:</p>
+            <div class="video-container">
+              <video width="320" height="240" autoplay>
+                <source src="static/talking_head.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+          </section>    
           
           <button class="audio-button" onclick="toggleAudio()">
             <img class="audio-icon" id="audioIcon" src="static/audio_off.png" alt="Toggle Audio">
@@ -93,8 +101,6 @@
         <audio id="audio" autoplay>
             <source src="static/audio.mp3" type="audio/mpeg">
         </audio>
-
-        
         
         <section>
           <h1 style="color: #03254c;" id = "summary">Summary</h1>
@@ -111,7 +117,7 @@
             </label>
             <input type="file" id="image-upload-input" accept="image/*">
           </div>
-        </section>
+        </section>    
 
         <section class="avatar-section">
           <p class="section-grey-text">Enter your image generation prompt:</p>
@@ -141,7 +147,7 @@
     </div>
     
     <footer>
-        <p>© 2024 Stephanie Wan, Nick Yan, Rianna Santra, Manasvi Pinnaka, Rajarshi Mandal, Gavin Ye</p>
+        <p>© 2024 Stephanie Wan, Nick Yan, Rianna Santra, Manasvi Pinnaka, Rajarshi Mandal, Gavin Ye, Ansh Malhotra</p>
     </footer>
 </body>
   

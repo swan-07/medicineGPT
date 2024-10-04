@@ -12,6 +12,11 @@ from langchain.memory import ConversationSummaryMemory
 from langchain.schema import AIMessage, HumanMessage
 from PIL import Image
 
+import sys
+import asyncio
+
+from avatar_main import create_talking_head
+
 # HELPER METHODS
 
 
@@ -227,6 +232,15 @@ class Chatbots(object):
     if os.path.exists('static/audio.mp3'):
       os.remove('static/audio.mp3')
     response.stream_to_file("static/audio.mp3")
+
+  def text_to_avatar(self, output_text):
+    '''Given user input, generate a talking head avatar.'''
+    if os.path.exists('static/talking_head.mp4'):
+      os.remove('static/talking_head.mp4')
+      os.remove('/med-gpt-old/MedicineGPT/tts_audio.mp3')
+    asyncio.run(create_talking_head(output_text, "/Users/ansh/Downloads/Work/HMS Internship/med-gpt-old/MedicineGPT/tts_audio.mp3", "/Users/ansh/Downloads/Work/HMS Internship/med-gpt-old/MedicineGPT/static/talking_head.mp4"))
+
+
   
 # class Chatbot:
   def generate_all_emotion_images(self, user_prompt):

@@ -63,14 +63,17 @@ def index():
     chat_response = chatbot.get_response(user_input)
     print(chat_response)
     response = chat_response['response']
+    chatbot.text_to_avatar(response)
     emotion_image_url = chat_response["emotion_img_url"]
     print(response, emotion_image_url)
-    # TEXT TO SPEECH 
-    chatbot.text_to_speech(response)
+
+    # # TEXT TO SPEECH 
+    # chatbot.text_to_speech(response)
 
     data = {
         "messages": chatbot.messages,
         "emotion_image": emotion_image_url,  # Update to use the new image URL
+        "video": "static/talking_head.mp4",
         "summary": chatbot.current_summary
     }
     return render_template("index.html", data=data, response=response)
@@ -92,6 +95,38 @@ def index():
     }
     return render_template("index.html", data=data)
 
+# @app.route("/", methods=["GET", "POST"])
+# def index():
+#     if request.method == "POST":
+#         user_input = request.form["user_input"]
+#         chat_response = chatbot.get_response(user_input)
+#         response = chat_response['response']
+#         chatbot.text_to_avatar(response)
+#         emotion_image_url = chat_response["emotion_img_url"]
+#         video_path = "talking_head.mp4"
+
+#         data = {
+#             "messages": chatbot.messages,
+#             "emotion_image": emotion_image_url,
+#             "video": video_path,
+#             "summary": chatbot.current_summary
+#         }
+#         return render_template("index.html", data=data)
+#     else:
+#         default_messages = [{
+#             "role": "assistant",
+#             "content": "Hello! How can I assist you today?",
+#             "time": time.ctime(time.time()),
+#             "emotion_image": chatbot.emotion_avatars["neutral"]
+#         }]
+#         data = {
+#             "messages": chatbot.messages if len(chatbot.messages) > 0 else default_messages,
+#             "emotion_image": chatbot.messages[-1]["emotion_image"] if len(chatbot.messages) > 0 else default_messages[-1]["emotion_image"],
+#             "video": "talking_head.mp4",
+#             "summary": chatbot.current_summary
+#         }
+#         return render_template("index.html", data=data)
+
 
 @app.route('/user_image', methods=['POST'])
 def user_image():
@@ -107,6 +142,23 @@ def user_image():
   file.save('uploads/' + username + "/" + file.filename)
 
   return 'File uploaded successfully'
+
+@app.route('/user_video', methods=['POST'])
+def user_video():
+    if 'userVideoFile' not in request.files:
+        return 'No file part'
+
+    file = request.files['userVideoFile']
+
+    if file.filename == '':
+        return 'No selected file'
+
+    # Save the video file
+    file.save(f'uploads/{username}/{file.filename}')
+    
+    # Assuming you'll use this filename in the front-end to display the video
+    return 'File uploaded successfully'
+
 
 @app.route('/genomic_data', methods=['POST'])
 def upload_genomic_data():

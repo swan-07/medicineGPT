@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat App with Video Sidebar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .left-sidebar {
+            width: 15%;
+            background-color: #f4f4f4;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .main-content {
+            width: 55%; /* Reduced the width for the chat area */
+            padding: 20px;
+            background-color: #fff;
+            box-sizing: border-box;
+        }
+
+        .right-sidebar {
+            width: 30%; /* Sidebar for the video */
+            background-color: #f9f9f9;
+            padding: 10px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .right-sidebar video {
+            max-width: 100%;
+            height: auto;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 24px;
+            color: #333;
+        }
+
+        .chat-box {
+            height: 80%;
+            overflow-y: scroll;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 10px;
+            background-color: #f1f1f1;
+        }
+
+        .input-box {
+            margin-top: 10px;
+        }
+
+        .input-box input {
+            width: 85%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .input-box button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .input-box button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Left Sidebar -->
+        <div class="left-sidebar">
+            <h2>Menu</h2>
+            <ul>
+                <li><a href="#">Option 1</a></li>
+                <li><a href="#">Option 2</a></li>
+                <li><a href="#">Option 3</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Chat Content -->
+        <div class="main-content">
+            <h2>Chat Section</h2>
+            <div class="chat-box">
+                <p>User 1: Hello!</p>
+                <p>User 2: Hi there!</p>
+                <!-- Chat messages will go here -->
+            </div>
+
+            <div class="input-box">
+                <input type="text" placeholder="Type a message...">
+                <button type="submit"><i class="fa fa-send"></i> Send</button>
+            </div>
+        </div>
+
+        <!-- Right Sidebar for Video -->
+        <div class="right-sidebar">
+            <video controls>
+                <source src="/display_video" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </div>
+</body>
+</html>
